@@ -105,7 +105,8 @@ function test(){
 	}
 }
 function downClick(){
-	autoss = confirm('Сохранять каждый кадр?');
+	// для скриншота - раскомментируйте
+	// autoss = confirm('Сохранять каждый кадр?');
 }
 function leftClick(){
 }
