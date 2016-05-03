@@ -1,7 +1,7 @@
 window.addEventListener("DOMContentLoaded", init, false);
-window.addEventListener("mousewheel", function (e) {
-    scale *= e.wheelDeltaY > 0 ? 1.25 : 0.8
-}, false);
+window.addEventListener("mousewheel", onMouseWheel, false);
+window.addEventListener("mousedown", onMouseDown, false);
+window.addEventListener("mouseup", onMouseUp, false);
 
 var HEIGHT = window.innerHeight, WIDTH = window.innerWidth, PI2 = Math.PI * 2;
 var d = {
@@ -9,6 +9,14 @@ var d = {
     y: HEIGHT / 2,
     v: [0, 0, 0],
     light: 500
+};
+var pos = {
+    x: 0,
+    y: 0
+};
+var mouse = {
+    x: 0,
+    y: 0
 };
 var canvas, context, engine, body = [], scale = (HEIGHT > WIDTH ? WIDTH : HEIGHT) / 4;
 
@@ -61,7 +69,7 @@ function onRequestFrame() {
     for (var i = 0, len = body.length; i < len; i++) {
         if (d.r < 1) d.r = 1;
         context.beginPath();
-        context.arc(body[i].x * scale + d.x, body[i].y * scale + d.y, body[i].r * scale, 0, PI2);
+        context.arc((body[i].x + pos.x) * scale + d.x, (body[i].y + pos.y) * scale + d.y, body[i].r * scale, 0, PI2);
         context.closePath();
         d.v[0] = body[i].t * d.light;
         d.v[1] = d.v[0] * 0.14;
@@ -73,4 +81,23 @@ function onRequestFrame() {
         context.fillStyle = "RGB(" + d.v[0] + "," + d.v[1] + "," + d.v[2] + ")";
         context.fill();
     }
+}
+
+function onMouseWheel(e) {
+    scale *= e.wheelDeltaY > 0 ? 1.25 : 0.8
+}
+
+function onMouseDown(e) {
+    window.addEventListener("mousemove", onMouseMove, false);
+    mouse.x = e.x;
+    mouse.y = e.y;
+}
+function onMouseUp(e) {
+    window.removeEventListener("mousemove", onMouseMove);
+}
+function onMouseMove(e) {
+    pos.x += (e.x - mouse.x) / scale;
+    pos.y += (e.y - mouse.y) / scale;
+    mouse.x = e.x;
+    mouse.y = e.y;
 }
