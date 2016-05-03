@@ -39,7 +39,7 @@ addEventListener("message", function (e) {
             break;
         case "start":
             if (timer == null)
-                timer = setInterval(step, INTERVAL);
+                timer = setInterval(timered, INTERVAL);
             break;
         case "pause":
             if (timer != null) {
@@ -80,10 +80,6 @@ function step() {
                 cos: ax,
                 sin: ay
             };
-            if (isNaN(rr)) {
-                debugger;
-                console.log(dist, body);
-            }
         }
     }
 
@@ -142,7 +138,7 @@ function step() {
                     body[i].r = radius(body[i].m, body[i].t);
                     body[j].r = radius(body[j].m, body[j].t);
                 }
-                return;
+                return 1;
             }
         }
 
@@ -177,6 +173,11 @@ function step() {
         }
 
     postMessage(body);
+    return 0;
+}
+
+function timered() {
+    while (step()) continue;
 }
 
 function radius(m, t) {
