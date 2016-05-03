@@ -8,7 +8,7 @@ var d = {
     x: WIDTH / 2,
     y: HEIGHT / 2,
     v: [0, 0, 0],
-    light: 10000
+    light: 500
 };
 var canvas, context, engine, body = [], scale = (HEIGHT > WIDTH ? WIDTH : HEIGHT) / 4;
 
