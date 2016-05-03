@@ -1,18 +1,18 @@
-var G = 1;
+var G = 0.5;
 var body = [];
 var MAX = 10;
 var INTERVAL = 40;
 var timer = null;
 var MAX_DIST = 10.0; // максимально допустимое отдаление
 var AVG_DIST = 7.0; // появление новых объектов
-var INIT_DIST = 0.7; // радиус для одного круга
+var INIT_DIST = 1.0; // радиус инициализации
 var T_CRIT = 10.0; // соединение
 var M0 = 0.01; // начальная масса
 var R0 = radius(M0, 0); // начальный радиус
 var K = 0.85; // сколько скорости не теряется
 var KT = 1 - K; // сколько скорости переходит в тепло и теряется
 var dt = 1; // время обсчёта (в секундах) шага
-var rmin = 0.0001; // минимально допустимое расстояние
+var rmin = 0.0000001; // минимально допустимое расстояние
 var r2min = rmin * rmin;
 var MAX_DIST2 = MAX_DIST * MAX_DIST;
 
@@ -29,7 +29,7 @@ addEventListener("message", function (e) {
             param = new Array(MAX);
             for (var i = 0; i < MAX; i++)
                 param[i] = new Array(MAX);
-            addInitBody(MAX, INIT_DIST * Math.sqrt(MAX));
+            addInitBody(MAX, Math.sqrt(R0 * R0 * 100 * MAX));
             postMessage(body);
             break;
         case "start":
@@ -206,6 +206,8 @@ function addNewBody(n, dist) {
 }
 
 function addInitBody(n, dist) {
+    if (dist > AVG_DIST)
+        dist = AVG_DIST;
     while (n-- > 0) {
         var angle = Math.random() * 6.2829;
         var r = Math.random() * dist;
