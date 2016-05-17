@@ -1,5 +1,6 @@
 window.addEventListener("DOMContentLoaded", init, false);
-window.addEventListener("mousewheel", onMouseWheel, false);
+window.addEventListener("mousewheel", checkMouseWheel, false);
+window.addEventListener("DOMMouseScroll", checkMouseWheel, false);
 window.addEventListener("mousedown", onMouseDown, false);
 window.addEventListener("mouseup", onMouseUp, false);
 
@@ -83,21 +84,36 @@ function onRequestFrame() {
     }
 }
 
+function checkMouseWheel(e) {
+    window.removeEventListener("mousewheel", checkMouseWheel, false);
+    window.removeEventListener("DOMMouseScroll", checkMouseWheel, false);
+    if (e.type == "DOMMouseScroll")
+        window.addEventListener("DOMMouseScroll", onMouseWheelFF, false);
+    else
+        window.addEventListener("mousewheel", onMouseWheel, false);
+}
+
 function onMouseWheel(e) {
     scale *= e.wheelDeltaY > 0 ? 1.25 : 0.8
 }
 
+function onMouseWheelFF(e) {
+    scale *= e.detail < 0 ? 1.25 : 0.8
+}
+
 function onMouseDown(e) {
+    console.log(e);
     window.addEventListener("mousemove", onMouseMove, false);
-    mouse.x = e.x;
-    mouse.y = e.y;
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
 }
 function onMouseUp(e) {
+    console.log(e);
     window.removeEventListener("mousemove", onMouseMove);
 }
 function onMouseMove(e) {
-    pos.x += (e.x - mouse.x) / scale;
-    pos.y += (e.y - mouse.y) / scale;
-    mouse.x = e.x;
-    mouse.y = e.y;
+    pos.x += (e.clientX - mouse.x) / scale;
+    pos.y += (e.clientY - mouse.y) / scale;
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
 }
