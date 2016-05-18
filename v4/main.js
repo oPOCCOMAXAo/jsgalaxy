@@ -27,9 +27,9 @@ function init() {
         t = t.substring(1);
         t = parseInt(t);
         if (isNaN(t))
-            t = 50;
+            t = 100;
     } else
-        t = 50;
+        t = 100;
 
     canvas = document.createElement("canvas");
     with (canvas) {
@@ -102,13 +102,11 @@ function onMouseWheelFF(e) {
 }
 
 function onMouseDown(e) {
-    console.log(e);
     window.addEventListener("mousemove", onMouseMove, false);
     mouse.x = e.clientX;
     mouse.y = e.clientY;
 }
 function onMouseUp(e) {
-    console.log(e);
     window.removeEventListener("mousemove", onMouseMove);
 }
 function onMouseMove(e) {
